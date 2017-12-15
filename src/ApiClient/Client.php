@@ -22,6 +22,6 @@ class Client
 
     public function domains($identifier = null)
     {
-        return new Domains(new Core($this->config), $identifier);
+       return new Domains(new Core($this->config), $identifier);
     }
 }

@@ -3,14 +3,24 @@
 require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Composer autoload
 
 use ApiClient\Client;
+use ApiClient\Model;
 
 $client = new Client(
     'http://api-public.checkdomain.vm/v1/',
-    'blub'
+    'WnZwauTqHCh5NvD7KoHlLakuBagBnVExduqIP6+H12KTIkrFcBvx9uk4yILHPXtOttOreIk/iPFn8j64'
 );
 
-$response = $client->domains(1)->nameserver()->retrieve();
-$response = $client->domains(1)->retrieve();
+#$response = $client->domains(1)->nameserver()->records(1)->retrieve();
+
+
+$request = new Model\Request\Domain\Nameserver\Record();
+$request->setName("test")
+    ->setType('A')
+    ->setPriority(0)
+    ->setTtl(180)
+    ->setValue('192.168.0.1');
+
+$response = $client->domains(1)->nameservers()->records()->create($request);
 
 var_dump($response);
 

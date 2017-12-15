@@ -3,6 +3,7 @@
 namespace ApiClient\Client;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\MessageInterface;
 
 class Core
@@ -52,11 +53,13 @@ class Core
                 $this->uri,
                 $this->guzzleOptions
             );
-        } catch (\Exception $exception) {
-            return $exception->getMessage();
+
+            $json = $response->getBody();
+        } catch (RequestException $exception) {
+            $json = $exception->getResponse()->getBody()->getContents();
         }
 
-        return $this->buildReponse($response);
+        return json_decode($json);
     }
 
     public function post($request)
@@ -68,18 +71,28 @@ class Core
                 $this->uri,
                 $this->guzzleOptions
             );
-        } catch (\Exception $exception) {
-            return $exception->getMessage();
+
+            $json = $response->getBody();
+        } catch (RequestException $exception) {
+            $json = $exception->getResponse()->getBody()->getContents();
         }
 
-        return $this->buildReponse($response);
+        return [
+            'header' => json_decode($response->getHeaders()),
+            'code' => $response->getStatusCode(),
+            'content' => json_decode($json),
+        ];
+
+        //return json_decode($json);
     }
 
     public function buildPath($identifier, $className)
     {
         $uri = $this->getPathFromClassName($className);
 
-        $this->uri .= $uri;
+        $this->uri = trim($this->uri, "/");
+
+        $this->uri .= "/".$uri;
         if (null !== $identifier) {
             $this->uri .= "/" . $identifier;
         }
@@ -88,11 +101,6 @@ class Core
     public function buildActionPath($actionUri)
     {
         $this->uri .= "/".$actionUri;
-    }
-
-    protected function buildReponse(MessageInterface $response = null)
-    {
-        return json_decode($response->getBody());
     }
 
     private function buildHeader()

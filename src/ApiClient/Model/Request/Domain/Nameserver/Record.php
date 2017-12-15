@@ -12,35 +12,35 @@ class Record
      *
      * @var string
      */
-    private $name;
+    public $name;
 
     /**
      * Record value
      *
      * @var string
      */
-    private $value;
+    public $value;
 
     /**
      * Time to live
      *
      * @var integer
      */
-    private $ttl;
+    public $ttl;
 
     /**
      * Priority
      *
      * @var integer
      */
-    private $priority;
+    public $priority;
 
     /**
      * Record type
      *
      * @var string
      */
-    private $type;
+    public $type;
 
     /**
      * @return string

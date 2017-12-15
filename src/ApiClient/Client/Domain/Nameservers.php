@@ -2,20 +2,22 @@
 
 namespace ApiClient\Client\Domain;
 
+use ApiClient\Client\Base;
 use ApiClient\Client\Core;
+use ApiClient\Client\Domain\Nameserver\Records;
 
-class Nameservers
+class Nameservers extends Base
 {
-    /**
-     * @var Core
-     */
-    private $core;
-
-    public function __construct(Core $core, $identifier = null, $parentUri = null)
+    public function __construct(Core $core, $identifier = null)
     {
-        $this->core = $core;
+        parent::__construct($core, $identifier);
 
         $this->core->buildPath($identifier, __CLASS__);
+    }
+
+    public function records($identifier = null)
+    {
+        return new Records($this->core, $identifier);
     }
 
     public function retrieve()

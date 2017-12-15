@@ -13,7 +13,7 @@ class Domains extends Base
         $this->core->buildPath($identifier, __CLASS__);
     }
 
-    public function nameserver()
+    public function nameservers()
     {
         if(null !== $this->identifier) {
             return new Client\Domain\Nameservers($this->core,null);
