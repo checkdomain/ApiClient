@@ -6,11 +6,11 @@ use ApiClient\Client;
 
 $client = new Client(
     'http://api-public.checkdomain.vm/v1/',
-    'WnZwauTqHCh5NvD7KoHlLakuBagBnVExduqIP6+H12KTIkrFcBvx9uk4yILHPXtOttOreIk/iPFn8j64'
+    'blub'
 );
 
 $response = $client->domains(1)->nameserver()->retrieve();
-$response = $client->domains()->retrieve();
+$response = $client->domains(1)->retrieve();
 
 var_dump($response);
 
@@ -23,8 +23,8 @@ $client->domains(1)->remove();                  // eine domain löschen
 
 $client->domains('www.test.de')->check();
 
-$client->domains('1')->create()->autoRenewal();
-$client->domains('1')->remove()->autoRenewal();
+$client->domains('1')->autoRenewal()->create();
+$client->domains('1')->autoRenewal()->remove();
 
 $client->domains('1')->create()->transfer();
 $client->domains('1')->remove()->transfer();
