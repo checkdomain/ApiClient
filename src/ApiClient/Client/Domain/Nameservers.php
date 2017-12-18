@@ -25,8 +25,8 @@ class Nameservers extends Base
         return $this->core->get();
     }
 
-    protected function replace()
+    public function replace($request)
     {
-
+        return $this->core->put($request);
     }
 }

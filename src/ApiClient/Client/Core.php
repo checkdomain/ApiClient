@@ -4,8 +4,6 @@ namespace ApiClient\Client;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
-use phpDocumentor\Reflection\Types\Object_;
-use Psr\Http\Message\MessageInterface;
 
 class Core
 {
