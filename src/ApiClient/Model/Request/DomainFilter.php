@@ -4,7 +4,7 @@ namespace ApiClient\Model\Request\Domain;
 
 use ApiClient\Model\AbstractFilter;
 
-class Filter extends AbstractFilter
+class DomainFilter extends AbstractFilter
 {
     private $name;
 

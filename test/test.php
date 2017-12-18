@@ -28,12 +28,15 @@ $request = new Model\Request\Domain\Nameserver\Record();
 
 #Domains
 # Alle Domains gefiltert
-$filter = new Model\Request\Domain\Filter();
+$filter = new Model\Request\Domain\DomainFilter();
 $filter
     ->setLimit(1)
     ->setPage(2);
 
 $response = $client->domains()->retrieve($filter);
+
+#$client->articles()->retrieve();
+
 
 # Eine Domain
 #$response = $client->domains(111)->retrieve();
