@@ -3,6 +3,7 @@
 namespace ApiClient\Client;
 
 use ApiClient\Client;
+use ApiClient\Model\Request\Domain\Filter;
 
 class Domains extends Base
 {
@@ -29,9 +30,9 @@ class Domains extends Base
         return $this->core->get();
     }
 
-    public function retrieve()
+    public function retrieve(Filter $filter = null)
     {
-        return $this->core->get();
+        return $this->core->get($filter);
     }
 
     protected function create()

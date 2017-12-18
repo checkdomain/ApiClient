@@ -24,4 +24,9 @@ class Records extends Base
     {
         return $this->core->post($request);
     }
+
+    public function replace(Record $request)
+    {
+        return $this->core->put($request);
+    }
 }

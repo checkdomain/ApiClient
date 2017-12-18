@@ -4,6 +4,7 @@ namespace ApiClient\Client;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
+use phpDocumentor\Reflection\Types\Object_;
 use Psr\Http\Message\MessageInterface;
 
 class Core
@@ -44,9 +45,11 @@ class Core
         return new Domains($identifier);
     }
 
-    public function get($query = array())
+    public function get($filter = null)
     {
-        $this->guzzleOptions['query'] = $query;
+        if(null !== $filter) {
+            $this->guzzleOptions['query'] = $this->convertModelToArray($filter);
+        }
 
         try {
             $response = $this->guzzleClient->get(
@@ -77,22 +80,56 @@ class Core
             $json = $exception->getResponse()->getBody()->getContents();
         }
 
-        return [
-            'header' => json_decode($response->getHeaders()),
-            'code' => $response->getStatusCode(),
-            'content' => json_decode($json),
-        ];
-
-        //return json_decode($json);
+        return json_decode($json);
     }
+
+    public function put($request)
+    {
+        $this->guzzleOptions['body'] = json_encode($request);
+
+        try {
+            $response = $this->guzzleClient->put(
+                $this->uri,
+                $this->guzzleOptions
+            );
+
+            $json = $response->getBody();
+        } catch (RequestException $exception) {
+            $json = $exception->getResponse()->getBody()->getContents();
+        }
+
+        return json_decode($json);
+    }
+
+    public function patch($request)
+    {
+        $this->guzzleOptions['body'] = json_encode($request);
+
+        try {
+            $response = $this->guzzleClient->patch(
+                $this->uri,
+                $this->guzzleOptions
+            );
+
+            $json = $response->getBody();
+        } catch (RequestException $exception) {
+            $json = $exception->getResponse()->getBody()->getContents();
+        }
+
+        return json_decode($json);
+    }
+
 
     public function buildPath($identifier, $className)
     {
         $uri = $this->getPathFromClassName($className);
 
-        $this->uri = trim($this->uri, "/");
+        if (!empty($this->uri)) {
+            $this->uri .= "/" . $uri;
+        } else {
+            $this->uri = $uri;
+        }
 
-        $this->uri .= "/".$uri;
         if (null !== $identifier) {
             $this->uri .= "/" . $identifier;
         }
@@ -121,5 +158,35 @@ class Core
     private function getPathFromClassName($classname){
         $c = basename(str_replace('\\', '/', $classname));
         return strtolower($c);
+    }
+
+    /**
+     * Convertiert die Private Vars eines Models zu einem Array
+     *
+     * @param        $object
+     * @param        $skipEmpty
+     *
+     * @return array $array
+     */
+    private function convertModelToArray($object, $skipEmpty = true)
+    {
+        $array = [];
+
+        $methodes = get_class_methods($object);
+        foreach ($methodes as $methode) {
+            if (strpos($methode, "get") !== false) {
+                $value = $object->$methode();
+                if(true === $skipEmpty && empty($value)) {
+                    continue;
+                }
+                if (is_object($value)) {
+                    $value = $this->convertModelToArray($value);
+                }
+
+                $array[strtolower(str_replace('get','', $methode))] = $value;
+            }
+        }
+
+        return $array;
     }
 }
