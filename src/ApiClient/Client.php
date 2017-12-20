@@ -11,7 +11,14 @@ use GuzzleHttp\Exception\RequestException;
  */
 class Client
 {
-    const BASE_URI = "";
+    /** Allowed Http Methodes  */
+    const HTTP_POST     = 'post';
+    const HTTP_GET      = 'get';
+    const HTTP_PUT      = 'put';
+    const HTTP_PATCH    = 'patch';
+
+    /** Base Api Url */
+    const BASE_URI      = "http://api-public.checkdomain.vm/{version}/";
 
     /**
      * @var GuzzleClient
@@ -23,15 +30,24 @@ class Client
      */
     protected $guzzleOptions;
 
-    public function __construct($token)
+    public function __construct($version, $token)
     {
         $this->buildHeader($token);
 
         $this->guzzleClient = new GuzzleClient([
-            'base_uri' => self::BASE_URI,
+            'base_uri' => str_replace('{version}', $version,self::BASE_URI),
         ]);
     }
 
+    /**
+     * @param string     $methode
+     * @param string     $uri
+     * @param array      $param
+     * @param array|null $body
+     *
+     * @throws \Exception
+     * @return mixed
+     */
     public function request(
         $methode,
         $uri,
@@ -47,18 +63,41 @@ class Client
         }
 
         try {
-            $response = $this->guzzleClient->request(
+            $guzzleResponse = $this->guzzleClient->request(
                 $methode,
                 $uri,
                 $this->guzzleOptions
             );
 
-            $json = $response->getBody();
+            $response = json_decode($guzzleResponse->getBody()->getContents());
+            if(null === $response) {
+                $response = new \stdClass();
+                $response->code = $guzzleResponse->getStatusCode();
+                $response->location = $guzzleResponse->getHeader('Location')[0];
+            }
+
         } catch (RequestException $exception) {
-            $json = $exception->getResponse()->getBody()->getContents();
+            if(null == $exception->getResponse()) {
+                $response = new \stdClass();
+                $response->code = $exception->getCode();
+                $response->message =  $exception->getMessage();
+            } else {
+                $response = json_decode($exception->getResponse()->getBody()->getContents());
+            }
         }
 
-        return json_decode($json);
+        // return allways same stdObject struct
+        if (!isset($response->message)) {
+            $response->message = null;
+        }
+        if (!isset($response->errors)) {
+            $response->errors = null;
+        }
+        if (!isset($response->location)) {
+            $response->location = null;
+        }
+
+        return $response;
     }
 
     private function buildHeader($token)
