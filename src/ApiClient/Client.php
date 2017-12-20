@@ -30,6 +30,12 @@ class Client
      */
     protected $guzzleOptions;
 
+    /**
+     * Client constructor.
+     *
+     * @param $version
+     * @param $token
+     */
     public function __construct($version, $token)
     {
         $this->buildHeader($token);
@@ -62,6 +68,8 @@ class Client
             $this->guzzleOptions['body'] = json_encode($body);
         }
 
+        $location = null;
+
         try {
             $guzzleResponse = $this->guzzleClient->request(
                 $methode,
@@ -69,37 +77,29 @@ class Client
                 $this->guzzleOptions
             );
 
+            $code = $guzzleResponse->getStatusCode();
+            $location = $guzzleResponse->getHeader('Location')[0];
+
             $response = json_decode($guzzleResponse->getBody()->getContents());
-            if(null === $response) {
-                $response = new \stdClass();
-                $response->code = $guzzleResponse->getStatusCode();
-                $response->location = $guzzleResponse->getHeader('Location')[0];
-            }
-
         } catch (RequestException $exception) {
-            if(null == $exception->getResponse()) {
-                $response = new \stdClass();
-                $response->code = $exception->getCode();
-                $response->message =  $exception->getMessage();
-            } else {
+            $code = $exception->getCode();
+            if(null !== $exception->getResponse()) {
                 $response = json_decode($exception->getResponse()->getBody()->getContents());
+            } else {
+                throw new \Exception($exception->getMessage());
             }
         }
 
-        // return allways same stdObject struct
-        if (!isset($response->message)) {
-            $response->message = null;
-        }
-        if (!isset($response->errors)) {
-            $response->errors = null;
-        }
-        if (!isset($response->location)) {
-            $response->location = null;
-        }
-
-        return $response;
+        return [
+            'code' => $code,
+            'location' => $location,
+            'response' => $response
+        ];
     }
 
+    /**
+     * @param $token
+     */
     private function buildHeader($token)
     {
         $header = [
