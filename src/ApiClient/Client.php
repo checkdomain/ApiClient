@@ -18,7 +18,7 @@ class Client
     const HTTP_PATCH    = 'patch';
 
     /** Base Api Url */
-    const BASE_URI      = "http://api-public.checkdomain.vm/{version}/";
+    const BASE_URI      = "https://api.checkdomain.de/{version}/";
 
     /**
      * @var GuzzleClient
@@ -57,7 +57,7 @@ class Client
     public function request(
         $methode,
         $uri,
-        $param,
+        $param = null,
         $body = null
     ) {
         if (null !== $param) {
