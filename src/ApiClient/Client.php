@@ -4,6 +4,7 @@ namespace ApiClient;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * Guzzle Client Wrapper für die Checkdomain API
@@ -23,12 +24,12 @@ class Client
     /**
      * @var GuzzleClient
      */
-    protected $guzzleClient;
+    private $guzzleClient;
 
     /**
      * @var array
      */
-    protected $guzzleOptions;
+    private $guzzleOptions;
 
     /**
      * Client constructor.
@@ -36,17 +37,19 @@ class Client
      * @param $version
      * @param $token
      */
-    public function __construct($version, $token)
+    public function __construct($version, $token, $config = array())
     {
-        $this->buildHeader($token);
+        $this->guzzleClient = new GuzzleClient(
+             array_merge(['base_uri' => $this->getBasePath($version)], $config)
+        );
 
-        $this->guzzleClient = new GuzzleClient([
-            'base_uri' => str_replace('{version}', $version,self::BASE_URI),
-        ]);
+        $this->guzzleOptions = [
+            "headers" =>  $this->getHeader($token)
+        ];
     }
 
     /**
-     * @param string     $methode
+     * @param string     $method
      * @param string     $uri
      * @param array      $param
      * @param array|null $body
@@ -55,7 +58,7 @@ class Client
      * @return mixed
      */
     public function request(
-        $methode,
+        $method,
         $uri,
         $param = null,
         $body = null
@@ -68,26 +71,40 @@ class Client
             $this->guzzleOptions['body'] = json_encode($body);
         }
 
-        $location = null;
-
         try {
             $guzzleResponse = $this->guzzleClient->request(
-                $methode,
+                $method,
                 $uri,
                 $this->guzzleOptions
             );
+            return $this->getResponseObject($guzzleResponse);
+        } catch (RequestException $exception) {
+            return $this->getResponseObject($exception);
+        }
+    }
 
+    /**
+     * @param ResponseInterface|RequestException $guzzleResponse
+     *
+     * @return array
+     * @throws \Exception
+     */
+    private function getResponseObject($guzzleResponse)
+    {
+        $location = null;
+        if ($guzzleResponse instanceof RequestException){
+            $code = $guzzleResponse->getCode();
+            if(null !== $guzzleResponse->getResponse()) {
+                $response = json_decode($guzzleResponse->getResponse()->getBody()->getContents());
+            } else {
+                throw new \Exception($guzzleResponse->getMessage());
+            }
+        } else {
+            /** @var ResponseInterface $guzzleResponse */
             $code = $guzzleResponse->getStatusCode();
             $location = $guzzleResponse->getHeader('Location')[0];
 
             $response = json_decode($guzzleResponse->getBody()->getContents());
-        } catch (RequestException $exception) {
-            $code = $exception->getCode();
-            if(null !== $exception->getResponse()) {
-                $response = json_decode($exception->getResponse()->getBody()->getContents());
-            } else {
-                throw new \Exception($exception->getMessage());
-            }
         }
 
         return [
@@ -98,17 +115,25 @@ class Client
     }
 
     /**
-     * @param $token
+     * @param string $token
+     *
+     * @return array
      */
-    private function buildHeader($token)
+    private function getHeader($token)
     {
-        $header = [
+        return [
             'Authorization' => 'Bearer ' . $token,
             'Accept'        => 'application/json',
         ];
+    }
 
-        $this->guzzleOptions = [
-            "headers" => $header
-        ];
+    /**
+     * @param string $version
+     *
+     * @return mixed
+     */
+    private function getBasePath($version)
+    {
+        return str_replace('{version}', $version,self::BASE_URI);
     }
 }

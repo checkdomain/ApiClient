@@ -4,11 +4,11 @@ require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Compos
 
 // new instance of api client
 $client = new \ApiClient\Client(
-    '',
-    ''
+    'v1',
+    'yourToken'
 );
 
-//  CPUT Example
+//  CPUT Example, replace all nameserver records for your domain
 $response = $client->request($client::HTTP_PUT,'domains/111/nameservers/records', null, [
     [
         'name' => '@',
@@ -24,9 +24,10 @@ $response = $client->request($client::HTTP_PUT,'domains/111/nameservers/records'
         'type' => 'A',
     ]
 ]);
+
 var_dump($response);
 
-//  PUT Example
+//  PUT Example, replace a single nameserver record
 $response = $client->request($client::HTTP_PUT,'domains/111/nameservers/records/25', null, [
     'name' => '@',
     'value' => '172.0.0.88',

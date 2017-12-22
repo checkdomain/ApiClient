@@ -1,0 +1,16 @@
+HTTP/1.1 201 Created
+Date: Fri, 22 Dec 2017 13:18:33 GMT
+Server: Apache/2.4.10
+Cache-Control: no-cache
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 998
+X-RateLimit-Reset: 1513950023
+X-Debug-Token: c1d702
+Vary: Authorization
+Location: /v1/domains/461499/nameservers/records/3456724
+Cache-Control: max-age=0
+Expires: Fri, 22 Dec 2017 13:18:32 GMT
+Content-Length: 0
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Content-Type: application/json

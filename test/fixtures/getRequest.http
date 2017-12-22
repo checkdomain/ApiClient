@@ -1,0 +1,72 @@
+HTTP/1.1 200 OK
+Date: Fri, 22 Dec 2017 11:09:13 GMT
+Server: Apache/2.4.10
+Cache-Control: no-cache
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1513944548
+X-Debug-Token: d35e4f
+Vary: Authorization
+Cache-Control: max-age=0
+Expires: Fri, 22 Dec 2017 11:09:08 GMT
+Keep-Alive: timeout=5, max=100
+Connection: Keep-Alive
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{
+  "page": 1,
+  "limit": 10,
+  "pages": 1,
+  "total": 5,
+  "_links": {
+    "self": {
+      "href": "\/v1\/domains\/461499\/nameservers\/records?page=1&limit=10"
+    },
+    "first": {
+      "href": "\/v1\/domains\/461499\/nameservers\/records?page=1&limit=10"
+    },
+    "last": {
+      "href": "\/v1\/domains\/461499\/nameservers\/records?page=1&limit=10"
+    }
+  },
+  "_embedded": {
+    "records": [
+      {
+        "name": "@",
+        "value": "78.46.49.120",
+        "ttl": 180,
+        "priority": 0,
+        "type": "A"
+      },
+      {
+        "name": "@",
+        "value": "",
+        "ttl": 180,
+        "priority": 0,
+        "type": "AAAA"
+      },
+      {
+        "name": "",
+        "value": "ns.checkdomain.de",
+        "ttl": 180,
+        "priority": 0,
+        "type": "NS"
+      },
+      {
+        "name": "",
+        "value": "ns2.checkdomain.de",
+        "ttl": 180,
+        "priority": 0,
+        "type": "NS"
+      },
+      {
+        "name": "renntraining-vergleich.de",
+        "value": "IN SOA ns.checkdomain.de. hostmaster1@checkdomain.de. 40001 7201 604801",
+        "ttl": 10801,
+        "priority": 0,
+        "type": "SOA"
+      }
+    ]
+  }
+}
