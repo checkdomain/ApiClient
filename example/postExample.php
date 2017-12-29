@@ -9,7 +9,7 @@ $client = new \ApiClient\Client(
 );
 
 //  Create a new nameserver record
-$response = $client->request($client::HTTP_POST,'/domains/111/nameservers/records', null, [
+$response = $client->request($client::HTTP_POST,'/domains/{domain}/nameservers/records', null, [
     'name' => '@',
     'value' => '172.0.0.1',
     'ttl' => 180,

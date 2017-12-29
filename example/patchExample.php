@@ -8,8 +8,8 @@ $client = new \ApiClient\Client(
 'yourToken'
 );
 
-// Patch record with id 3451620 example
-$response = $client->request($client::HTTP_PATCH,'domains/461499/nameservers/records/3451620', null, [
+//  PATCH example, updates a single nameserver record
+$response = $client->request($client::HTTP_PATCH,'domains/{domain}/nameservers/records/{record}', null, [
     'name' => 'zickzacke',
     'value' => '172.0.0.1',
     'ttl' => 180,

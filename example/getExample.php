@@ -9,12 +9,12 @@ $client = new \ApiClient\Client(
 );
 
 // get single record
-$response = $client->request($client::HTTP_GET,'domains/461499/nameservers/records/3451620');
+$response = $client->request($client::HTTP_GET,'domains/{domain}/nameservers/records/{record}');
 
 var_dump($response);
 
-// get all records for domain "461499"
-$response = $client->request($client::HTTP_GET,'domains/461499/nameservers/records');
+// get all records for specific domain
+$response = $client->request($client::HTTP_GET,'domains/{domain}/nameservers/records');
 
 var_dump($response);
 
