@@ -14,8 +14,8 @@ final class ClientTest extends TestCase
     const VERSION = "version";
     const BASE_URI = "https://api.checkdomain.de/";
 
-    const GET_REQUEST_FIXTURE = "getRequest.http";
-    const POST_REQUEST_FIXTURE = "postRequest.http";
+    const GET_REQUEST_FIXTURE = "getResponse.http";
+    const POST_REQUEST_FIXTURE = "postResponse.http";
 
     /**
      * @var Client
@@ -76,7 +76,7 @@ final class ClientTest extends TestCase
     /**
      * Test Http GET Success
      */
-    public function testRequest()
+    public function testGetRequest()
     {
         $this->setGuzzleMockHandler(self::GET_REQUEST_FIXTURE);
 
@@ -96,6 +96,9 @@ final class ClientTest extends TestCase
         );
     }
 
+    /**
+     *  Test Http POST Success
+     */
     public function testPostRequest()
     {
         $this->setGuzzleMockHandler(self::POST_REQUEST_FIXTURE);

@@ -1,12 +1,30 @@
 {
     "name": "checkdomain/api-client",
     "description": "Checkdomain API - Client",
-    "type": "project",
+    "type": "library",
+    "keywords": [
+        "domain api",
+        "domain provisioning",
+        "doamin registry api",
+        "domain registration api",
+        "checkdomain api",
+        "checkdomain service api",
+        "domain",
+        "domains"
+    ],
     "license": "MIT",
     "authors": [
         {
             "name": "Julian Bente",
-            "email": "jbente@checkdomain.de"
+            "email": "jbente@checkdomain.de",
+            "homepage": "www.checkdomain.de",
+            "role": "developer"
+        }
+    ],
+    "support": [
+        {
+            "email" : "support@checkdomain.de",
+            "docs": "developer.checkdomain.de/reference"
         }
     ],
     "minimum-stability": "dev",
