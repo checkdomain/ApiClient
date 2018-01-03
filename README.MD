@@ -20,4 +20,4 @@ For more informations visit [Semantic Versioning](https://semver.org/).
 
 ## License
 
-Copyright (c) 2015-2017 Checkdomain GmbH, This is Free Software distributed under the MIT license.
+Copyright (c) 2017 Checkdomain GmbH, This is Free Software distributed under the MIT license.
