@@ -91,27 +91,36 @@ class Client
      */
     private function getResponseObject($guzzleResponse)
     {
-        $location = null;
+        $response = [
+            'code' => null,
+            'location' => null,
+            'message' => null,
+            'body' => null
+        ];
+
         if ($guzzleResponse instanceof RequestException){
-            $code = $guzzleResponse->getCode();
             if(null !== $guzzleResponse->getResponse()) {
-                $response = json_decode($guzzleResponse->getResponse()->getBody()->getContents());
+                $errorResponse = json_decode($guzzleResponse->getResponse()->getBody()->getContents());
+                if(false === empty($errorResponse)) {
+                    $response['code'] = $errorResponse->code;
+                    $response['message'] = $errorResponse->message;
+                    $response['body'] = $errorResponse->errors;
+                } else {
+                    $response['code'] = $guzzleResponse->getResponse()->getStatusCode();
+                    $response['message'] = $guzzleResponse->getResponse()->getReasonPhrase();
+                }
             } else {
-                throw new \Exception($guzzleResponse->getMessage());
+                $response['code'] = $guzzleResponse->getCode();
+                $response['message'] = $guzzleResponse->getMessage();
             }
         } else {
             /** @var ResponseInterface $guzzleResponse */
-            $code = $guzzleResponse->getStatusCode();
-            $location = $guzzleResponse->getHeader('Location')[0];
-
-            $response = json_decode($guzzleResponse->getBody()->getContents());
+            $response['code'] = $guzzleResponse->getStatusCode();
+            $response['location'] = $guzzleResponse->getHeader('Location')[0];
+            $response['body'] = json_decode($guzzleResponse->getBody()->getContents());
         }
 
-        return [
-            'code' => $code,
-            'location' => $location,
-            'response' => $response
-        ];
+        return $response;
     }
 
     /**

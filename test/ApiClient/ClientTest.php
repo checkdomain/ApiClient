@@ -84,14 +84,14 @@ final class ClientTest extends TestCase
 
         $this->assertEquals(200, $response['code']);
         $this->assertEquals(null, $response['location']);
-        $this->assertNotEmpty($response['response']);
+        $this->assertNotEmpty($response['body']);
 
         $content = file_get_contents(__DIR__ . "/../fixtures/".self::GET_REQUEST_FIXTURE);
         $pos = strpos($content, "{");
         $body = substr($content, $pos, strlen($content)-$pos);
 
         $this->assertEquals(
-            $response['response'],
+            $response['body'],
             json_decode($body)
         );
     }
@@ -107,7 +107,7 @@ final class ClientTest extends TestCase
 
         $this->assertEquals(201, $response['code']);
         $this->assertEquals('/v1/domains/461499/nameservers/records/3456724', $response['location']);
-        $this->assertEmpty($response['response']);
+        $this->assertEmpty($response['body']);
     }
 
     /**
