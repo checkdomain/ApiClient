@@ -8,7 +8,7 @@ $client = new \ApiClient\Client(
 'yourToken'
 );
 
-// get single record
+// get a single record
 $response = $client->get('domains/{domain}/nameservers/records/{records}');
 
 var_dump($response);

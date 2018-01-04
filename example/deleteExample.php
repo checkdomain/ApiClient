@@ -8,7 +8,7 @@ $client = new \ApiClient\Client(
     'yourToken'
 );
 
-// delete single record
+// delete a single record
 $response = $client->delete('domains/{domain}/nameservers/records/{records}');
 
 var_dump($response);

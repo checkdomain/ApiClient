@@ -8,7 +8,7 @@ $client = new \ApiClient\Client(
     'yourToken'
 );
 
-//  CPUT example, replace all nameserver records for your domain
+// replace all nameserver records for your domain
 $response = $client->put('domains/{domain}/nameservers/records',  [
     [
         'name' => '@',
@@ -27,7 +27,7 @@ $response = $client->put('domains/{domain}/nameservers/records',  [
 
 var_dump($response);
 
-//  PUT example, replace a single nameserver record
+// replace a single nameserver record
 $response = $client->put('domains/{domain}/nameservers/records/{record}', [
     'name' => '@',
     'value' => '172.0.0.88',

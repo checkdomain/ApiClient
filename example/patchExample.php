@@ -8,7 +8,7 @@ $client = new \ApiClient\Client(
 'yourToken'
 );
 
-//  PATCH example, updates a single nameserver record
+//  update a single nameserver record
 $response = $client->patch('domains/{domain}/nameservers/records/{record}', [
     'name' => 'zickzacke',
     'value' => '172.0.0.1',
