@@ -1,8 +1,8 @@
 # The checkdomain API client for php
 
-A php client for the[Checkdomain Rest API](https://developer.checkdomain.de/).
+A php client for the [Checkdomain Rest API] (https://developer.checkdomain.de/).
 
-Visit[Getting Started with Checkdomain API](https://developer.checkdomain.de/guide/#first-steps-and-setup)to get a extended version of instructions.
+Visit [Getting Started with Checkdomain API](https://developer.checkdomain.de/guide/#first-steps-and-setup) to get a extended version of instructions.
 
 ## Setup
 ##### Via Composer
@@ -52,7 +52,7 @@ $response = $client->post('domains/{domains}/nameservers/records',  [
 var_dump($response);
 ```
 More helpful examples stored at the example folder.<br>
-In addition take a look at the[API Reference](https://developer.checkdomain.de/reference/)
+In addition take a look at the [API Reference](https://developer.checkdomain.de/reference/)
 
 ## Semantic Versioning 2.0.0
 
