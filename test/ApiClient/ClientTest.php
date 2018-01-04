@@ -66,7 +66,7 @@ final class ClientTest extends TestCase
     public function testParams()
     {
         $this->getProtectedMethod($this->client, 'request', [
-           'METHOD', 'URL', ['key' => "value"], ['key' => 'value']
+           'HTTP_METHOD', 'URL', ['key' => "value"], ['key' => 'value']
         ]);
 
         $options = $this->getProtectedProperty($this->client,'guzzleOptions');
@@ -81,7 +81,7 @@ final class ClientTest extends TestCase
     {
         $this->setGuzzleMockHandler(self::GET_OK_FIX);
 
-        $response = $this->client->get('METHOD','URL');
+        $response = $this->client->get('domains');
 
         $this->assertEquals(200, $response['code']);
         $this->assertEquals(null, $response['location']);
@@ -104,7 +104,13 @@ final class ClientTest extends TestCase
     {
         $this->setGuzzleMockHandler(self::POST_OK_FIX);
 
-        $response = $this->client->post('METHOD','URL');
+        $response = $this->client->post('domains/123/nameservers/records',[
+            'name' => '@',
+            'value' => '172.0.0.1',
+            'ttl' => 180,
+            'priority' => 0,
+            'type' => 'A',
+        ]);
 
         $this->assertEquals(201, $response['code']);
         $this->assertEquals('/v1/domains/461499/nameservers/records/3456724', $response['location']);
@@ -118,7 +124,13 @@ final class ClientTest extends TestCase
     {
         $this->setGuzzleMockHandler(self::POST_ERROR_FIX);
 
-        $response = $this->client->post('METHOD','URL');
+        $response = $this->client->post('domains/123/nameservers/records',[
+            'name' => '@',
+            'value' => '172.0.0.1',
+            'ttl' => 180,
+            'priority' => 0,
+            'type' => 'A',
+        ]);
 
         $this->assertEquals(500, $response['code']);
         $this->assertEquals('Nameserver update failed', $response['message']);
@@ -133,7 +145,13 @@ final class ClientTest extends TestCase
     {
         $this->setGuzzleMockHandler(self::POST_ERROR_VALID_FIX);
 
-        $response = $this->client->post('METHOD','URL');
+        $response = $this->client->post('domains/123/nameservers/records', [
+            'name' => '@',
+            'value' => '172.0.0.1',
+            'ttl' => 180,
+            'priority' => 999,
+            'type' => 'A',
+        ]);
 
         $this->assertEquals(400, $response['code']);
         $this->assertNotEmpty($response['body']);
