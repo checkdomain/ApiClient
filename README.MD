@@ -2,12 +2,66 @@
 
 A PHP client for the [Checkdomain Rest API](https://developer.checkdomain.de/).
 
-Wrapper for Guzzle Client
+Visit [Getting Started with Checkdomain API](https://developer.checkdomain.de/guide/#first-steps-and-setup) to get a extended version of instructions.
+
+## Installation
+##### Via Composer
+```
+{
+    "require" : {
+        "checkdomain/api-client" : "^1.0.0"
+    }
+}
+```
+## Example
+```
+/**
+ * Create a new api-client instance
+ *
+ * Replace {yourToken} with your secret token
+ *
+ * For further informations please visit
+ * @see https://developer.checkdomain.de/guide/#1-registration-for-api-access
+ */
+$client = new \ApiClient\Client(
+    'v1',
+    '{yourToken}'
+);
+ 
+ 
+/**
+ * Example: How to create a new nameserver record
+ *
+ * Replace {domains} with identifier
+ *
+ * For further informations please visit
+ * @see https://developer.checkdomain.de/reference/v1/domains/%7Bdomain%7D/nameservers/records/
+ */
+$response = $client->post('domains/{domains}/nameservers/records',  [
+    'name' => '@',
+    'value' => '172.0.0.1',
+    'ttl' => 180,
+    'priority' => 0,
+    'type' => 'A',
+]);
+ 
+### $response ###
+array(4) {
+  ["code"]=>
+  int(201)
+  ["location"]=>
+  string(46) "/v1/domains/{domains}/nameservers/records/{new-record}"
+  ["message"]=>
+  NULL
+  ["body"]=>
+  NULL
+}
+```
+For more examples look at the example folder in the project base dir.
 
 ## Semantic Versioning 2.0.0
 
 We follow the rules of Semantic Versioning 2.0.0 .
-
 ### Summary
 Given a version number MAJOR.MINOR.PATCH, increment the:
 
