@@ -1,4 +1,4 @@
-# Checkdomain PHP - API Client
+# The checkdomain API client for php
 
 A PHP client for the [Checkdomain API](https://developer.checkdomain.de/).
 
