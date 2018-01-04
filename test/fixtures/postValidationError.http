@@ -1,0 +1,30 @@
+HTTP/1.1 400 Bad Request
+Date: Thu, 04 Jan 2018 10:42:17 GMT
+Server: Apache/2.4.10
+Cache-Control: no-cache
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 997
+X-RateLimit-Reset: 1515066011
+X-Debug-Token: 01f3ce
+Vary: Authorization
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{
+  "code": 400,
+  "message": "Validation Failed",
+  "errors": {
+    "children": {
+      "name": {},
+      "priority": {
+        "errors": [
+          "This value (100) should be equal to 0."
+        ]
+      },
+      "type": {},
+      "ttl": {},
+      "value": {}
+    }
+  }
+}

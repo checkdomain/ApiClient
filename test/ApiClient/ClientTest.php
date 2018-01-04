@@ -14,8 +14,10 @@ final class ClientTest extends TestCase
     const VERSION = "version";
     const BASE_URI = "https://api.checkdomain.de/";
 
-    const GET_REQUEST_FIXTURE = "getResponse.http";
-    const POST_REQUEST_FIXTURE = "postResponse.http";
+    const GET_OK_FIX = "getSuccess.http";
+    const POST_OK_FIX = "postSuccess.http";
+    const POST_ERROR_FIX = 'postError.http';
+    const POST_ERROR_VALID_FIX =  "postValidationError.http";
 
     /**
      * @var Client
@@ -41,7 +43,7 @@ final class ClientTest extends TestCase
      */
     public function testGetHeader()
     {
-        $result = $this->getProtectedMethode($this->client, 'getHeader', ['token']);
+        $result = $this->getProtectedMethod($this->client, 'getHeader', ['token']);
 
         $this->assertEquals('Bearer '.self::TOKEN, $result['Authorization']);
         $this->assertEquals('application/json', $result['Accept']);
@@ -53,7 +55,7 @@ final class ClientTest extends TestCase
      */
     public function testGetBasePath()
     {
-        $result = $this->getProtectedMethode($this->client, 'getBasePath', ['version']);
+        $result = $this->getProtectedMethod($this->client, 'getBasePath', ['version']);
 
         $this->assertEquals(self::BASE_URI.self::VERSION.'/', $result);
     }
@@ -63,51 +65,87 @@ final class ClientTest extends TestCase
      */
     public function testParams()
     {
-        $this->client->request('METHODE','URL',
-            ['key' => "value"],
-            ['key' => 'value']
-        );
+        $this->getProtectedMethod($this->client, 'request', [
+           'METHOD', 'URL', ['key' => "value"], ['key' => 'value']
+        ]);
 
         $options = $this->getProtectedProperty($this->client,'guzzleOptions');
-        $this->assertEquals('value',$options['query']['key']);
+        $this->assertEquals('value', $options['query']['key']);
         $this->assertEquals('{"key":"value"}',$options['body']);
     }
 
     /**
-     * Test Http GET Success
+     * Test http GET success
      */
     public function testGetRequest()
     {
-        $this->setGuzzleMockHandler(self::GET_REQUEST_FIXTURE);
+        $this->setGuzzleMockHandler(self::GET_OK_FIX);
 
-        $response = $this->client->request('METHODE','URL');
+        $response = $this->client->get('METHOD','URL');
 
         $this->assertEquals(200, $response['code']);
         $this->assertEquals(null, $response['location']);
         $this->assertNotEmpty($response['body']);
 
-        $content = file_get_contents(__DIR__ . "/../fixtures/".self::GET_REQUEST_FIXTURE);
+        $content = file_get_contents(__DIR__ . "/../fixtures/".self::GET_OK_FIX);
         $pos = strpos($content, "{");
-        $body = substr($content, $pos, strlen($content)-$pos);
+        $body = json_decode(substr($content, $pos, strlen($content)-$pos));
 
         $this->assertEquals(
             $response['body'],
-            json_decode($body)
+            $body
         );
     }
 
     /**
-     *  Test Http POST Success
+     *  Test http POST success
      */
-    public function testPostRequest()
+    public function testPostSuccess()
     {
-        $this->setGuzzleMockHandler(self::POST_REQUEST_FIXTURE);
+        $this->setGuzzleMockHandler(self::POST_OK_FIX);
 
-        $response = $this->client->request('METHODE','URL');
+        $response = $this->client->post('METHOD','URL');
 
         $this->assertEquals(201, $response['code']);
         $this->assertEquals('/v1/domains/461499/nameservers/records/3456724', $response['location']);
         $this->assertEmpty($response['body']);
+    }
+
+    /**
+     *  Test http POST error
+     */
+    public function testPostError()
+    {
+        $this->setGuzzleMockHandler(self::POST_ERROR_FIX);
+
+        $response = $this->client->post('METHOD','URL');
+
+        $this->assertEquals(500, $response['code']);
+        $this->assertEquals('Nameserver update failed', $response['message']);
+        $this->assertEmpty($response['body']);
+        $this->assertEmpty($response['location']);
+    }
+
+    /**
+     *  Test http POST validation failure
+     */
+    public function testPostValidation()
+    {
+        $this->setGuzzleMockHandler(self::POST_ERROR_VALID_FIX);
+
+        $response = $this->client->post('METHOD','URL');
+
+        $this->assertEquals(400, $response['code']);
+        $this->assertNotEmpty($response['body']);
+
+        $content = file_get_contents(__DIR__ . "/../fixtures/".self::POST_ERROR_VALID_FIX);
+        $pos = strpos($content, "{");
+        $body = json_decode(substr($content, $pos, strlen($content)-$pos));
+
+        $this->assertEquals(
+            $response['body'],
+            $body->errors
+        );
     }
 
     /**
@@ -140,7 +178,7 @@ final class ClientTest extends TestCase
      *
      * @return mixed
      */
-    private function getProtectedMethode(Client $object, $methodName, $args)
+    private function getProtectedMethod(Client $object, $methodName, $args)
     {
         $reflection = new \ReflectionClass(get_class($object));
         $method = $reflection->getMethod($methodName);

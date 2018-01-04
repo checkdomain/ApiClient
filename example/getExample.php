@@ -5,14 +5,14 @@ require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Compos
 // new instance of api client
 $client = new \ApiClient\Client(
     'v1',
-'yourToken'
+'your token'
 );
 
 // get single record
-$response = $client->request($client::HTTP_GET,'domains/{domain}/nameservers/records/{record}');
+$response = $client->get('domains/111/nameservers');
 
 var_dump($response);
-
+/*
 // get all records for specific domain
 $response = $client->request($client::HTTP_GET,'domains/{domain}/nameservers/records');
 
@@ -28,4 +28,4 @@ $filter = [
 $response = $client->request($client::HTTP_GET,'articles', $filter);
 
 var_dump($response);
-
+*/

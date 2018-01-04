@@ -14,9 +14,10 @@ class Client
 {
     /** Allowed Http Methodes  */
     const HTTP_POST     = 'post';
-    const HTTP_GET      = 'get';
+    const HTTP_DELETE   = 'delete';
     const HTTP_PUT      = 'put';
     const HTTP_PATCH    = 'patch';
+    const HTTP_GET      = 'get';
 
     /** Base Api Url */
     const BASE_URI      = "https://api.checkdomain.de/{version}/";
@@ -51,20 +52,20 @@ class Client
     /**
      * @param string     $method
      * @param string     $uri
-     * @param array      $param
+     * @param array      $query
      * @param array|null $body
      *
      * @throws \Exception
      * @return mixed
      */
-    public function request(
+    private function request(
         $method,
         $uri,
-        $param = null,
+        $query = null,
         $body = null
     ) {
-        if (null !== $param) {
-            $this->guzzleOptions['query'] = $param;
+        if (null !== $query) {
+            $this->guzzleOptions['query'] = $query;
         }
 
         if (null !== $body) {
@@ -81,6 +82,60 @@ class Client
         } catch (RequestException $exception) {
             return $this->getResponseObject($exception);
         }
+    }
+
+    /**
+     * @param $uri
+     * @param $body
+     *
+     * @return mixed
+     */
+    public function post($uri, $body)
+    {
+        return $this->request(self::HTTP_POST, $uri, null, $body);
+    }
+
+    /**
+     * @param      $uri
+     * @param      $body
+     *
+     * @return mixed
+     */
+    public function put($uri, $body)
+    {
+        return $this->request(self::HTTP_PUT, $uri, null, $body);
+    }
+
+    /**
+     * @param $uri
+     * @param $body
+     *
+     * @return mixed
+     */
+    public function patch($uri, $body)
+    {
+        return $this->request(self::HTTP_PATCH, $uri, null, $body);
+    }
+
+    /**
+     * @param $uri
+     *
+     * @return mixed
+     */
+    public function delete($uri)
+    {
+        return $this->request(self::HTTP_DELETE, $uri);
+    }
+
+    /**
+     * @param      $uri
+     * @param null $query
+     *
+     * @return mixed
+     */
+    public function get($uri, $query = null)
+    {
+        return $this->request(self::HTTP_GET, $uri, $query);
     }
 
     /**

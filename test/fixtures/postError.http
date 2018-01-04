@@ -1,0 +1,17 @@
+HTTP/1.1 500 Internal Server Error
+Date: Thu, 04 Jan 2018 11:00:31 GMT
+Server: Apache/2.4.25 (Ubuntu)
+Cache-Control: no-cache
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 995
+X-RateLimit-Reset: 1515065001
+Vary: Authorization
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{
+  "code": 500,
+  "message": "Nameserver update failed",
+  "errors": null
+}
