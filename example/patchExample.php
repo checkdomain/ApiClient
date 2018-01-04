@@ -9,7 +9,7 @@ $client = new \ApiClient\Client(
 );
 
 //  PATCH example, updates a single nameserver record
-$response = $client->request($client::HTTP_PATCH,'domains/{domain}/nameservers/records/{record}', null, [
+$response = $client->patch('domains/{domain}/nameservers/records/{record}', [
     'name' => 'zickzacke',
     'value' => '172.0.0.1',
     'ttl' => 180,
