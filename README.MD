@@ -1,10 +1,10 @@
 # The checkdomain API client for php
 
-A PHP client for the [Checkdomain Rest API](https://developer.checkdomain.de/).
+A php client for the[Checkdomain Rest API](https://developer.checkdomain.de/).
 
-Visit [Getting Started with Checkdomain API](https://developer.checkdomain.de/guide/#first-steps-and-setup) to get a extended version of instructions.
+Visit[Getting Started with Checkdomain API](https://developer.checkdomain.de/guide/#first-steps-and-setup)to get a extended version of instructions.
 
-## Installation
+## Setup
 ##### Via Composer
 ```
 {
@@ -15,6 +15,10 @@ Visit [Getting Started with Checkdomain API](https://developer.checkdomain.de/gu
 ```
 ## Example
 ```
+<?php
+ 
+require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Composer autoload
+ 
 /**
  * Create a new api-client instance
  *
@@ -45,19 +49,10 @@ $response = $client->post('domains/{domains}/nameservers/records',  [
     'type' => 'A',
 ]);
  
-### $response ###
-array(4) {
-  ["code"]=>
-  int(201)
-  ["location"]=>
-  string(46) "/v1/domains/{domains}/nameservers/records/{new-record}"
-  ["message"]=>
-  NULL
-  ["body"]=>
-  NULL
-}
+var_dump($response);
 ```
-For more examples look at the example folder in the project base dir.
+More helpful examples stored at the example folder.<br>
+In addition take a look at the[API Reference](https://developer.checkdomain.de/reference/)
 
 ## Semantic Versioning 2.0.0
 
