@@ -1,6 +1,6 @@
 # The checkdomain API client for php
 
-A php client for the [Checkdomain Rest API] (https://developer.checkdomain.de/).
+A php client for the [Checkdomain Rest API](https://developer.checkdomain.de/).
 
 Visit [Getting Started with Checkdomain API](https://developer.checkdomain.de/guide/#first-steps-and-setup) to get a extended version of instructions.
 
