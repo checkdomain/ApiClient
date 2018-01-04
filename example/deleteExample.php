@@ -9,6 +9,6 @@ $client = new \ApiClient\Client(
 );
 
 // delete a single record
-$response = $client->delete('domains/{domain}/nameservers/records/{records}');
+$response = $client->delete('contacts/{contact}');
 
 var_dump($response);

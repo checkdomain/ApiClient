@@ -8,13 +8,9 @@ $client = new \ApiClient\Client(
 'yourToken'
 );
 
-//  update a single nameserver record
-$response = $client->patch('domains/{domain}/nameservers/records/{record}', [
-    'name' => 'zickzacke',
-    'value' => '172.0.0.1',
-    'ttl' => 180,
-    'priority' => 0,
-    'type' => 'A',
+//  update a single contact
+$response = $client->patch('contacts/{contact}', [
+    "first_name" => "Jane"
 ]);
 
 var_dump($response);

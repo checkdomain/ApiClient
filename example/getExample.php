@@ -20,8 +20,6 @@ var_dump($response);
 
 // get all articles match filter criteria
 $filter = [
-    'limit' => 10,  // max. 10 results per page
-    'page' => 2,    // get results from page 2
     'tld' => 'de'   // TOP-LEVEL-DOMAIN "de"
 ];
 

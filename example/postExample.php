@@ -5,7 +5,7 @@ require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Compos
 // new instance of api client
 $client = new \ApiClient\Client(
     'v1',
-    ''
+    'yourToken'
 );
 
 // create a new nameserver record
