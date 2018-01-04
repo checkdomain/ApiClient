@@ -2,7 +2,7 @@
 
 A php client for the [Checkdomain Rest API](https://developer.checkdomain.de/).
 
-Visit [Getting Started with Checkdomain API](https://developer.checkdomain.de/guide/#first-steps-and-setup) to get a extended version of instructions.
+Visit our [Checkdomain API Guide](https://developer.checkdomain.de/guide) to get a extended version of instructions.
 
 ## Setup
 ##### Via Composer
