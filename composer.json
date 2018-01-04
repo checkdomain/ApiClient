@@ -1,5 +1,5 @@
 {
-    "name": "checkdomain/checkdomain-api-php",
+    "name": "checkdomain/api-client",
     "description": "The checkdomain API client for php",
     "type": "library",
     "keywords": [

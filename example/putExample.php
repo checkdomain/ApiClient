@@ -2,13 +2,27 @@
 
 require_once __DIR__ . '/../vendor/autoload.php'; // Autoload files using Composer autoload
 
-// new instance of api client
+/**
+ * Create a new api-client instance
+ *
+ * Replace {yourToken} with your secret token
+ *
+ * For further informations please visit
+ * @see https://developer.checkdomain.de/guide/#1-registration-for-api-access
+ */
 $client = new \ApiClient\Client(
     'v1',
-    'yourToken'
+    '{yourToken}'
 );
 
-// replace all nameserver records for your domain
+/**
+ * Example: How to replace all nameserver records for a given domain
+ *
+ * Replace {domains} with identifier
+ *
+ * For further informations please visit
+ * @see https://developer.checkdomain.de/reference/v1/domains/%7Bdomain%7D/nameservers/records/
+ */
 $response = $client->put('domains/{domain}/nameservers/records',  [
     [
         'name' => '@',
@@ -24,10 +38,16 @@ $response = $client->put('domains/{domain}/nameservers/records',  [
         'type' => 'A',
     ]
 ]);
-
 var_dump($response);
 
-// replace a single nameserver record
+/**
+ * Example: How to replace a nameserver record for a given domain
+ *
+ * Replace {domains} and {record} with identifier
+ *
+ * For further informations please visit
+ * @see https://developer.checkdomain.de/reference/v1/domains/%7Bdomain%7D/nameservers/records/
+ */
 $response = $client->put('domains/{domain}/nameservers/records/{record}', [
     'name' => '@',
     'value' => '172.0.0.88',
@@ -35,5 +55,4 @@ $response = $client->put('domains/{domain}/nameservers/records/{record}', [
     'priority' => 0,
     'type' => 'A',
 ]);
-
 var_dump($response);
