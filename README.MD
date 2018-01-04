@@ -1,8 +1,8 @@
 # The checkdomain API client for php
 
-A PHP client for the [Checkdomain API](https://developer.checkdomain.de/).
+A PHP client for the [Checkdomain Rest API](https://developer.checkdomain.de/).
 
-Simple Guzzle Client Wrapper for the Checkdomain Rest API.
+Wrapper for Guzzle Client
 
 ## Semantic Versioning 2.0.0
 
